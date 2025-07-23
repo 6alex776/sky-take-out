@@ -35,7 +35,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeMapper employeeMapper;
 
-
     /**
      * 员工登录
      *
@@ -107,4 +106,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     }
 
+    //修改员工状态
+    @Override
+    public void changeStatus(Integer status, Long id) {
+
+        Employee employee = new Employee();
+        employee.setStatus(status);
+        employee.setId(id);
+        employee.setUpdateTime(LocalDateTime.now());
+
+        employeeMapper.changeStatus(employee);
+
+    }
 }

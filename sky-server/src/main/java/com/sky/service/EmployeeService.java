@@ -20,4 +20,7 @@ public interface EmployeeService {
 
 
     void inert(EmployeeDTO employeeDTO);
+
+
+    void changeStatus(Integer status, Long id);
 }

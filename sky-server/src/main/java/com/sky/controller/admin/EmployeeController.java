@@ -110,4 +110,21 @@ public class EmployeeController {
 
         return Result.success(pageResult);
     }
+
+    //查询类加泛型，非查询类可不加
+    //修改员工状态
+    @PostMapping(value = "/status/{status}")
+    @ApiOperation("更改员工状态")
+    public Result changeStatus(@PathVariable Integer status,Long id){
+
+        if (status == null) {
+            status = 1;
+        }
+
+        log.info("修改员工状态");
+
+        employeeService.changeStatus(status,id);
+
+        return Result.success();
+    }
 }
