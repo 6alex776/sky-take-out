@@ -1,10 +1,12 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.DishPageQueryDTO;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
@@ -13,13 +15,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import com.sky.dto.EmployeePageQueryDTO;
 
 /**
  * 员工管理
@@ -88,5 +90,24 @@ public class EmployeeController {
         employeeService.inert(employeeDTO);
 
         return Result.success();
+    }
+
+    //分页查询
+    @GetMapping(value = "/page")
+    @ApiOperation("员工分页查询")
+    public Result<PageResult> selectPage(EmployeePageQueryDTO employeePageQueryDTO) {
+
+        if (employeePageQueryDTO.getPage() <= 0) {
+            employeePageQueryDTO.setPage(1);
+        }
+        if (employeePageQueryDTO.getPageSize() <= 0) {
+            employeePageQueryDTO.setPageSize(10);
+        }
+
+        log.info("查询页面{}",employeePageQueryDTO);
+
+        PageResult pageResult = employeeService.selectPage(employeePageQueryDTO);
+
+        return Result.success(pageResult);
     }
 }
