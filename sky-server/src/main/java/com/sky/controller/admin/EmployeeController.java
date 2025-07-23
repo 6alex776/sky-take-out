@@ -127,4 +127,28 @@ public class EmployeeController {
 
         return Result.success();
     }
+
+    //查询员工回显
+    @GetMapping(value = "/{id}")
+    @ApiOperation("查询员工回显")
+    public Result<Employee> selectById(@PathVariable Integer id){
+
+        log.info("查询员工{}",id);
+
+        Employee employee = employeeService.selectById(id);
+
+        return Result.success(employee);
+    }
+
+    //编辑员工信息
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    public Result updateById(@RequestBody Employee employee){
+
+        log.info("编辑员工信息{}",employee);
+
+        employeeService.updateById(employee);
+
+        return Result.success();
+    }
 }

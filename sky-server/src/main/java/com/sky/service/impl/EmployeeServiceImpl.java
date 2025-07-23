@@ -118,4 +118,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.changeStatus(employee);
 
     }
+
+    //查询员工回显
+    @Override
+    public Employee selectById(Integer id) {
+
+        return employeeMapper.selectById(id);
+    }
+
+    //编辑员工信息
+    @Override
+    public void updateById(Employee employee) {
+
+        employee.setUpdateTime(LocalDateTime.now());
+
+        employeeMapper.updateById(employee);
+    }
 }

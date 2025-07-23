@@ -4,6 +4,7 @@
 
 <mapper namespace="com.sky.mapper.EmployeeMapper">
 
+
 <!--    分页查询-->
     <select id="selectPage" resultType="com.sky.entity.Employee">
         select * from sky_take_out.employee
@@ -13,12 +14,28 @@
         order by create_time desc
     </select>
 
+
 <!--    修改员工状态-->
     <update id="changeStatus">
         update sky_take_out.employee
         <set>
             <if test="status != null">status = #{status},</if>
-            <if test="updateTime != null">update_time = #{updateTime}</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+<!--    编辑员工信息-->
+    <update id="updateById">
+        update sky_take_out.employee
+        <set>
+            <if test="name != null and name != ''" >name = #{name},</if>
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="sex != null and sex != ''">sex = #{sex},</if>
+            <if test="idNumber != null and idNumber != ''">id_number = #{idNumber},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
         </set>
         where id = #{id}
     </update>

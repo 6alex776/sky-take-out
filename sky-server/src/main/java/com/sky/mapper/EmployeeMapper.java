@@ -32,4 +32,11 @@ public interface EmployeeMapper {
 
     //修改员工状态
     void changeStatus(Employee employee);
+
+    //查询员工回显
+    @Select("select * from sky_take_out.employee where id = #{id}")
+    Employee selectById(Integer id);
+
+    //编辑员工信息
+    void updateById(Employee employee);
 }
