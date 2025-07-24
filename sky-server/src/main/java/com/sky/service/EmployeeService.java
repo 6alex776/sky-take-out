@@ -19,7 +19,7 @@ public interface EmployeeService {
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
 
-    void inert(EmployeeDTO employeeDTO);
+    void inert(Employee employee);
 
 
     void changeStatus(Integer status, Long id);

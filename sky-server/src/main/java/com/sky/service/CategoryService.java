@@ -11,7 +11,7 @@ public interface CategoryService {
     PageResult selectPage(CategoryPageQueryDTO categoryPageQueryDTO);
 
     //修改分类
-    void update(CategoryDTO categoryDTO);
+    void update(Category category);
 
     //新增分类
     void insert(Category category);

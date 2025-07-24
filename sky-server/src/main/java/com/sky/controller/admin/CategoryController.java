@@ -44,11 +44,11 @@ public class CategoryController {
     //修改分类
     @PutMapping
     @ApiOperation("修改分类")
-    public Result update(@RequestBody CategoryDTO categoryDTO){
+    public Result update(@RequestBody Category category){
 
-        log.info("修改分类信息{}", categoryDTO);
+        log.info("修改分类信息{}", category);
 
-        categoryService.update(categoryDTO);
+        categoryService.update(category);
 
         return Result.success();
     }

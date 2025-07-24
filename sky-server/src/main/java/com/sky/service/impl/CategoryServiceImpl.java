@@ -43,13 +43,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     //修改分类
     @Override
-    public void update(CategoryDTO categoryDTO) {
+    public void update(Category category) {
 
-        Category category = new Category();
-        BeanUtils.copyProperties(categoryDTO,category);
-
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
+//        Category category = new Category();
+//        BeanUtils.copyProperties(categoryDTO,category);
+//
+//        category.setUpdateTime(LocalDateTime.now());
+//        category.setUpdateUser(BaseContext.getCurrentId());
 
         categoryMapper.update(category);
     }
@@ -58,11 +58,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void insert(Category category) {
 
-        category.setCreateTime(LocalDateTime.now());
-        category.setUpdateTime(LocalDateTime.now());
-
-        category.setCreateUser(BaseContext.getCurrentId());//从当前线程获取id
-        category.setUpdateUser(BaseContext.getCurrentId());
+//        category.setCreateTime(LocalDateTime.now());
+//        category.setUpdateTime(LocalDateTime.now());
+//
+//        category.setCreateUser(BaseContext.getCurrentId());//从当前线程获取id
+//        category.setUpdateUser(BaseContext.getCurrentId());
 
         categoryMapper.insert(category);
     }

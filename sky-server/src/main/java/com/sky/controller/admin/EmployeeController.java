@@ -83,11 +83,11 @@ public class EmployeeController {
     //添加员工
     @PostMapping
     @ApiOperation("新增员工")
-    public Result insert(@RequestBody EmployeeDTO employeeDTO) {
+    public Result insert(@RequestBody Employee employee) {
 
-        log.info("添加员工{}",employeeDTO);
+        log.info("添加员工{}",employee);
 
-        employeeService.inert(employeeDTO);
+        employeeService.inert(employee);
 
         return Result.success();
     }

@@ -74,19 +74,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     //添加员工
     @Override
-    public void inert(EmployeeDTO employeeDTO) {
-        Employee employee = new Employee();
-
-        BeanUtils.copyProperties(employeeDTO, employee);//拷贝属性
+    public void inert(Employee employee) {
+//        Employee employee = new Employee();
+//
+//        BeanUtils.copyProperties(employeeDTO, employee);//拷贝属性
 
         employee.setStatus(StatusConstant.ENABLE);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-
-        employee.setCreateUser(BaseContext.getCurrentId());//从当前线程获取id
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//
+//
+//        employee.setCreateUser(BaseContext.getCurrentId());//从当前线程获取id
+//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
 
@@ -98,10 +98,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
 
-        Page<Employee> page= employeeMapper.selectPage(employeePageQueryDTO);
+        Page<Employee> page = employeeMapper.selectPage(employeePageQueryDTO);
 
 
-        PageResult pageResult = new PageResult(page.getTotal(),page.getResult());
+        PageResult pageResult = new PageResult(page.getTotal(), page.getResult());
         return pageResult;
 
     }
@@ -130,7 +130,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void updateById(Employee employee) {
 
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
 
         employeeMapper.updateById(employee);
     }
