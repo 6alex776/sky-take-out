@@ -2,11 +2,15 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
+import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.CategoryService;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +24,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private DishMapper dishMapper;
+    @Autowired
+    private SetmealMapper setmealMapper;
 
     //分类分页查询
     @Override
@@ -76,6 +84,16 @@ public class CategoryServiceImpl implements CategoryService {
     //根据id删除分类
     @Override
     public void delete(Integer id) {
+
+        Integer count = dishMapper.countByCategoryId(id);
+        if (count > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_DISH);
+        }
+
+        count = setmealMapper.countByCategoryId(id);
+        if (count > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
+        }
 
         categoryMapper.delete(id);
 
