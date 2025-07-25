@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin/category")
 @Slf4j
@@ -23,7 +25,7 @@ public class CategoryController {
 
 
     //分类分页查询
-    @GetMapping({"/page", "/list"})
+    @GetMapping({"/page"})
     @ApiOperation("分类分页查询")
     public Result<PageResult> selectPage(CategoryPageQueryDTO categoryPageQueryDTO) {
         if (categoryPageQueryDTO.getPage() <= 0) {
@@ -40,6 +42,16 @@ public class CategoryController {
         return Result.success(pageResult);
     }
 
+    @GetMapping({"/list"})
+    @ApiOperation("分类查询")
+    public Result<List<Category>> selectCategory (Integer type) {
+
+        log.info("查询分类页面{}", type);
+
+        List<Category> pageResult = categoryService.selectCategory(type);
+
+        return Result.success(pageResult);
+    }
 
     //修改分类
     @PutMapping

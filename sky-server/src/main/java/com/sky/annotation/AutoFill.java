@@ -7,7 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-//公共字段自动填充
+//公共字段自动填充注释类
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 
