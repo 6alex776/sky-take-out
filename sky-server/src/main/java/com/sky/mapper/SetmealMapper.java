@@ -6,6 +6,7 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.DishVO;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -23,4 +24,16 @@ public interface SetmealMapper {
     //新增菜品
     @AutoFill(value = OperationType.INSERT)
     void addMeal(Setmeal setmeal);
+
+    //判断当前套餐是否在售卖
+    @Select("select * from sky_take_out.setmeal where id = #{id}")
+    Setmeal getById(Long id);
+
+    //删除套餐
+    @Delete("delete from sky_take_out.setmeal where id = #{id}")
+    void delete(Long id);
+
+
+    @AutoFill(value = OperationType.UPDATE)
+    void update(Setmeal setmeal);
 }

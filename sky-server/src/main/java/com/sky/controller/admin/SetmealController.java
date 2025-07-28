@@ -1,8 +1,6 @@
 package com.sky.controller.admin;
 
-import com.sky.dto.DishPageQueryDTO;
 import com.sky.dto.SetmealPageQueryDTO;
-import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -12,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/setmeal")
@@ -33,14 +33,60 @@ public class SetmealController {
         return Result.success(pageResult);
     }
 
-    //新增菜品
+    //新增套餐
     @PostMapping
-    @ApiOperation("新增菜品")
+    @ApiOperation("新增套餐")
     public Result addDish(@RequestBody Setmeal setmeal) {
-        log.info("新增菜品{}", setmeal);
+        log.info("新增套餐{}", setmeal);
 
         setmealService.addDish(setmeal);
 
         return Result.success();
+    }
+
+    //删除套餐
+    @DeleteMapping
+    @ApiOperation("删除套餐")
+    public Result delete(@RequestParam List<Long> ids) {
+
+        log.info("删除{}个菜品",ids.size());
+
+        setmealService.delete(ids);
+
+        return Result.success();
+    }
+
+    //启用禁用套餐
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用分类")
+    public Result change(@PathVariable Integer status,long id){
+
+        log.info("启用禁用分类{}", id);
+
+        setmealService.change(status,id);
+
+        return Result.success();
+    }
+
+    //查询回显
+    @GetMapping(value = "/{id}")
+    @ApiOperation("查询回显")
+    public Result<Setmeal> selectById(@PathVariable Long id){
+        log.info("查询套餐{}",id);
+
+        Setmeal setmeal = setmealService.selectById(id);
+
+        return Result.success(setmeal);
+    }
+    //修改套餐
+    @PutMapping
+    @ApiOperation("修改套餐")
+    public Result update(@RequestBody Setmeal setmeal){
+        log.info("修改套餐{}",setmeal);
+
+        setmealService.update(setmeal);
+
+        return Result.success();
+
     }
 }

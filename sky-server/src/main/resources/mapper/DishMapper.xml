@@ -37,6 +37,7 @@
             <if test="status != null">status = #{status},</if>
             <if test="updateTime != null">update_Time = #{updateTime},</if>
             <if test="updateUser != null">update_User = #{updateUser},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
         </set>
         where id = #{id}
     </update>
