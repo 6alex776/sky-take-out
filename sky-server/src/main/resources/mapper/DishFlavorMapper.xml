@@ -10,7 +10,6 @@
         <foreach collection="flavors" item="df" separator=",">
            (#{df.dishId},#{df.name},#{df.value})
         </foreach>
-
     </insert>
 
 </mapper>

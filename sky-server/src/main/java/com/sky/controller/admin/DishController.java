@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -57,4 +56,50 @@ public class DishController {
         return Result.success();
     }
 
+    //查询回显
+    @GetMapping(value = "/{id}")
+    @ApiOperation("查询回显")
+    public Result<Dish> selectById(@PathVariable Long id){
+        log.info("查询菜品{}",id);
+
+        Dish dish = dishService.selectById(id);
+
+        return Result.success(dish);
+    }
+
+    //修改菜品
+    @PutMapping
+    @ApiOperation("修改菜品")
+    public Result update(@RequestBody Dish dish){
+        log.info("修改菜品{}",dish);
+
+        dishService.update(dish);
+
+        return Result.success();
+
+    }
+
+    //启用禁用分类
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用分类")
+    public Result change(@PathVariable Integer status,long id){
+
+        log.info("启用禁用分类{}", id);
+
+        dishService.change(status,id);
+
+        return Result.success();
+    }
+
+    //根据分类id查询菜品
+    @GetMapping({"/list"})
+    @ApiOperation("分类查询")
+    public Result<List<Dish>> selectDish (Long categoryId) {
+
+        log.info("查询分类页面{}", categoryId);
+
+        List<Dish> list = dishService.list(categoryId);
+
+        return Result.success(list);
+    }
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 套餐
@@ -38,6 +40,9 @@ public class Setmeal implements Serializable {
 
     //图片
     private String image;
+
+    //套餐菜品关系
+    private List<SetmealDish> setmealDishes = new ArrayList<>();
 
     private LocalDateTime createTime;
 

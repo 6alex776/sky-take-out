@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.sky.mapper.SetmealMapper">
+
+
+    <select id="selectPage" resultType="com.sky.vo.DishVO">
+        select
+        s.*,
+        c.name as categoryName
+        from
+        sky_take_out.setmeal s
+        left join sky_take_out.category c on s.category_id = c.id
+        <where>
+            <if test="name != null and name != ''">and s.name like concat('%',#{name},'%')</if>
+            <if test="status != null">and s.status = #{status}</if>
+            <if test="categoryId != null">and s.category_id = #{categoryId}</if>
+        </where>
+        order by s.create_time desc
+    </select>
+
+<!--    新增菜品-->
+    <insert id="addMeal" useGeneratedKeys="true" keyProperty="id">
+        insert into sky_take_out.setmeal(name, category_id, price, image, description, status, create_time, update_time,
+                                      create_user, update_user)
+        values (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{status}, #{createTime}, #{updateTime},
+                #{createUser}, #{updateUser})
+    </insert>
+</mapper>

@@ -3,24 +3,22 @@ package com.sky.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishPageQueryDTO;
-import com.sky.entity.Category;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
-import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
-import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -85,4 +83,59 @@ public class DishServiceImpl implements DishService {
             dishFlavorMapper.delete(id);
         }
     }
+
+    @Override
+    public Dish selectById(Long id) {
+
+        Dish dish = dishMapper.getById(id);
+
+        List<DishFlavor> flavors = dishFlavorMapper.selectByDishId(id);// 设置口味列表
+
+        dish.setFlavors(flavors);
+
+        return dish;
+
+    }
+
+    @Override
+    public void update(Dish dish) {
+        dishMapper.update(dish);
+
+        dishFlavorMapper.delete(dish.getId());
+
+        List<DishFlavor> flavors = dish.getFlavors();
+
+        if (flavors != null && !flavors.isEmpty()) {
+            flavors.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dish.getId());
+            });
+            dishFlavorMapper.insertBatch(flavors);
+        }
+    }
+
+    @Override
+    public void change(Integer status, long id) {
+
+        Dish dish = new Dish();
+
+        dish.setStatus(status);
+        dish.setId(id);
+
+        dishMapper.update(dish);
+
+    }
+
+
+
+    //根据分类id查询菜品
+    @Override
+    public List<Dish> list(Long categoryId) {
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.list(dish);
+    }
+
+
 }

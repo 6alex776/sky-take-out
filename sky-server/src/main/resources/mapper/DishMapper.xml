@@ -20,18 +20,35 @@
         sky_take_out.dish d
         left join sky_take_out.category c on d.category_id = c.id
         <where>
-            <if test="name != null and name != ''">d.name like concat('%',#{name},'%')</if>
-            <if test="status != null">d.status = #{status}</if>
-            <if test="categoryId != null">d.category_id = #{categoryId}</if>
+            <if test="name != null and name != ''">and d.name like concat('%',#{name},'%')</if>
+            <if test="status != null">and d.status = #{status}</if>
+            <if test="categoryId != null">and d.category_id = #{categoryId}</if>
         </where>
         order by d.create_time desc
     </select>
 
-<!--    <delete id="delete">-->
-<!--        delete * from sky_take_out.dish-->
-<!--        <where>-->
-<!--            id in-->
-<!--            <foreach collection="ids" item="id" separator="," open="(" close=")">#{id}</foreach>-->
-<!--        </where>-->
-<!--    </delete>-->
+    <update id="update">
+        update sky_take_out.dish
+        <set>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_Time = #{updateTime},</if>
+            <if test="updateUser != null">update_User = #{updateUser},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <select id="list" resultType="com.sky.entity.Dish">
+        select * from sky_take_out.dish
+        <where>
+            <if test="name != null and name != ''">and name like concat('%',#{name},'%')</if>
+            <if test="status != null">and status = #{status}</if>
+            <if test="categoryId != null">and category_id = #{categoryId}</if>
+        </where>
+        order by create_time desc
+    </select>
 </mapper>
