@@ -19,8 +19,8 @@
     <select id="selectCategory" resultType="Category">
         select * from sky_take_out.category
         <where>
-            status = 1 and
-            <if test="type != null">type = #{type}</if>
+            status = 1
+            <if test="type != null">and type = #{type}</if>
         </where>
         order by sort asc
     </select>
