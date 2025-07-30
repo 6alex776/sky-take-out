@@ -23,6 +23,6 @@ public class ShopController {
 
         Integer status = (Integer) redisTemplate.opsForValue().get("status");
         log.info("getStatus{}", status == 1 ? "营业中" : "打样中");
-        return Result.success();
+        return Result.success(status);
     }
 }

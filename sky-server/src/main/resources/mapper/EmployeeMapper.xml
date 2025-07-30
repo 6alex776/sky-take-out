@@ -36,7 +36,25 @@
             <if test="sex != null and sex != ''">sex = #{sex},</if>
             <if test="idNumber != null and idNumber != ''">id_number = #{idNumber},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+<!--            <if test="password != null">password = #{password},</if>-->
         </set>
+        where id = #{id}
+    </update>
+
+
+    <update id="editPassword">
+        update sky_take_out.employee
+        <set>
+            <if test="newPassword != null">password = #{newPassword},</if>
+        </set>
+        where id = #{empId}
+    </update>
+
+
+    <!-- EmployeeMapper.xml -->
+    <update id="updatePassword" parameterType="com.sky.entity.Employee">
+        update sky_take_out.employee
+        set password = #{password}
         where id = #{id}
     </update>
 

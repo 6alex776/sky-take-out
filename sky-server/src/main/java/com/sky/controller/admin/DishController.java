@@ -9,9 +9,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/admin/dish")
@@ -22,6 +24,9 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     //新增菜品
     @PostMapping
     @ApiOperation("新增菜品")
@@ -30,6 +35,8 @@ public class DishController {
 
         dishService.addDish(dish);
 
+        String key = "dish_"+dish.getCategoryId();
+        clearRedis("dish_*");
         return Result.success();
     }
 
@@ -52,6 +59,7 @@ public class DishController {
         log.info("删除{}个菜品",ids.size());
 
         dishService.delete(ids);
+        clearRedis("dish_*");
 
         return Result.success();
     }
@@ -75,6 +83,7 @@ public class DishController {
 
         dishService.update(dish);
 
+        clearRedis("dish_*");
         return Result.success();
 
     }
@@ -87,6 +96,7 @@ public class DishController {
         log.info("启用禁用分类{}", id);
 
         dishService.change(status,id);
+        clearRedis("dish_*");
 
         return Result.success();
     }
@@ -101,5 +111,11 @@ public class DishController {
         List<Dish> list = dishService.list(categoryId);
 
         return Result.success(list);
+    }
+
+    //清理缓存数据
+    public void clearRedis(String pattern){
+        Set keys = redisTemplate.keys(pattern);
+        redisTemplate.delete(keys);
     }
 }

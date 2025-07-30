@@ -9,6 +9,7 @@ import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
@@ -17,6 +18,8 @@ import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,7 @@ import com.sky.utils.JwtUtil;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
@@ -43,31 +47,49 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
-        String password = employeeLoginDTO.getPassword();
+        String rawPassword = employeeLoginDTO.getPassword();
 
-        //1、根据用户名查询数据库中的数据
+        // 1. 查询员工
         Employee employee = employeeMapper.getByUsername(username);
-
-        //2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
         if (employee == null) {
-            //账号不存在
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
         }
 
-        password = DigestUtils.md5DigestAsHex(password.getBytes());//密码进行md5加密，然后再进行比对
+        // 2. 判断密码类型并验证
+        String storedPassword = employee.getPassword();
+        boolean passwordMatch = false;
 
-        //密码比对
-        if (!password.equals(employee.getPassword())) {
-            //密码错误
+        // 2.1 判断是否为MD5格式（32位16进制字符串）
+        if (storedPassword.length() == 32 && storedPassword.matches("[0-9a-f]{32}")) {
+            // MD5验证
+            String md5HashedPassword = DigestUtils.md5DigestAsHex(rawPassword.getBytes());
+            passwordMatch = md5HashedPassword.equals(storedPassword);
+
+            // 验证成功后，将MD5密码迁移为jbcrypt
+            if (passwordMatch) {
+                String newHashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());//TODO jbcrypt密码加密
+                employee.setPassword(newHashedPassword);
+                employeeMapper.updatePassword(employee); // 需要新增一个更新密码的Mapper方法
+            }
+        }
+        // 2.2 判断是否为jbcrypt格式（以$2a$开头）
+        else if (storedPassword.startsWith("$2a$")) {
+            passwordMatch = BCrypt.checkpw(rawPassword, storedPassword);
+        }
+        else {
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
 
+        // 3. 验证密码结果
+        if (!passwordMatch) {
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+        }
+
+        // 4. 验证账号状态
         if (employee.getStatus() == StatusConstant.DISABLE) {
-            //账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
 
-        //3、返回实体对象
         return employee;
     }
 
@@ -75,18 +97,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     //添加员工
     @Override
     public void inert(Employee employee) {
-//        Employee employee = new Employee();
-//
-//        BeanUtils.copyProperties(employeeDTO, employee);//拷贝属性
+
 
         employee.setStatus(StatusConstant.ENABLE);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-//        employee.setCreateTime(LocalDateTime.now());
-//        employee.setUpdateTime(LocalDateTime.now());
-//
-//
-//        employee.setCreateUser(BaseContext.getCurrentId());//从当前线程获取id
-//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
 
@@ -121,7 +135,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     //查询员工回显
     @Override
-    public Employee selectById(Integer id) {
+    public Employee selectById(Long id) {
 
         return employeeMapper.selectById(id);
     }
@@ -133,5 +147,45 @@ public class EmployeeServiceImpl implements EmployeeService {
 //        employee.setUpdateTime(LocalDateTime.now());
 
         employeeMapper.updateById(employee);
+    }
+
+    //修改员工密码
+    @Override
+    public void editPassword(PasswordEditDTO passwordEditDTO) {
+        Long currentEmpId = BaseContext.getCurrentId();
+        log.info("当前操作人员ID：{}", currentEmpId);
+        passwordEditDTO.setEmpId(currentEmpId);
+
+        // 1. 查询员工
+        Employee employee = employeeMapper.selectById(currentEmpId);
+        String storedPassword = employee.getPassword();
+        String rawOldPassword = passwordEditDTO.getOldPassword();
+
+        // 2. 判断密码类型并验证旧密码
+        boolean oldPasswordMatch = false;
+
+        if (storedPassword.length() == 32 && storedPassword.matches("[0-9a-f]{32}")) {
+            // MD5验证
+            String md5HashedOldPassword = DigestUtils.md5DigestAsHex(rawOldPassword.getBytes());
+            oldPasswordMatch = md5HashedOldPassword.equals(storedPassword);
+        }
+        else if (storedPassword.startsWith("$2a$")) {
+            // jbcrypt验证
+            oldPasswordMatch = BCrypt.checkpw(rawOldPassword, storedPassword);
+        }
+        else {
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+        }
+
+        if (!oldPasswordMatch) {
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+        }
+
+        // 3. 使用jbcrypt加密新密码（无论旧密码是MD5还是jbcrypt）
+        String newHashedPassword = BCrypt.hashpw(passwordEditDTO.getNewPassword(), BCrypt.gensalt());
+        passwordEditDTO.setNewPassword(newHashedPassword);
+
+        // 4. 更新密码
+        employeeMapper.editPassword(passwordEditDTO);
     }
 }

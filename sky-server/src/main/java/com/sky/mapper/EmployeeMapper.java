@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Insert;
@@ -40,9 +41,14 @@ public interface EmployeeMapper {
 
     //查询员工回显
     @Select("select * from sky_take_out.employee where id = #{id}")
-    Employee selectById(Integer id);
+    Employee selectById(Long id);
 
     //编辑员工信息
     @AutoFill(value = OperationType.UPDATE)
     void updateById(Employee employee);
+
+    void editPassword(PasswordEditDTO passwordEditDTO);
+
+    //从MD5变成BCrypt加密密码
+    void updatePassword(Employee employee);
 }
