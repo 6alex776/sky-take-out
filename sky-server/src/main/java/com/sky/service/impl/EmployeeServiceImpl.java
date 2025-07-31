@@ -152,7 +152,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     //修改员工密码
     @Override
     public void editPassword(PasswordEditDTO passwordEditDTO) {
-        Long currentEmpId = BaseContext.getCurrentId();
+
+        Long currentEmpId = BaseContext.getCurrentId();//TODO 获取当前用户id
         log.info("当前操作人员ID：{}", currentEmpId);
         passwordEditDTO.setEmpId(currentEmpId);
 

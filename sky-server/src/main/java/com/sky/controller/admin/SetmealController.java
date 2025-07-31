@@ -9,6 +9,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +38,7 @@ public class SetmealController {
     //新增套餐
     @PostMapping
     @ApiOperation("新增套餐")
+    @Cacheable(cacheNames = "setmealCache",key = "setmeal.categoryId")//springCache精确清理redis缓存
     public Result addDish(@RequestBody Setmeal setmeal) {
         log.info("新增套餐{}", setmeal);
 
@@ -47,6 +50,7 @@ public class SetmealController {
     //删除套餐
     @DeleteMapping
     @ApiOperation("删除套餐")
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true)//springCache清理redis缓存
     public Result delete(@RequestParam List<Long> ids) {
 
         log.info("删除{}个菜品",ids.size());
@@ -59,6 +63,7 @@ public class SetmealController {
     //启用禁用套餐
     @PostMapping("/status/{status}")
     @ApiOperation("启用禁用分类")
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true)//springCache清理redis缓存
     public Result change(@PathVariable Integer status,long id){
 
         log.info("启用禁用分类{}", id);
@@ -78,9 +83,11 @@ public class SetmealController {
 
         return Result.success(setmeal);
     }
+
     //修改套餐
     @PutMapping
     @ApiOperation("修改套餐")
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true)//springCache清理redis缓存
     public Result update(@RequestBody Setmeal setmeal){
         log.info("修改套餐{}",setmeal);
 

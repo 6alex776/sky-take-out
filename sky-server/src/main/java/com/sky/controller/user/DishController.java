@@ -47,7 +47,7 @@ public class DishController {
         if (list != null && !list.isEmpty()) {
             log.info("查询菜品存在");
             //若存在则返回数据
-            return Result.success(list);
+            return Result.success(list)   ;
 
         }
         //若没有则存入redis
