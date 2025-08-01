@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.sky.mapper.OrderMapper">
+
+
+    <insert id="addList" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sky_take_out.orders(number, status, user_id, address_book_id, order_time, checkout_time, pay_method,
+                                        pay_status, amount, remark, phone, address, user_name, consignee, cancel_reason,
+                                        rejection_reason, cancel_time, estimated_delivery_time, delivery_status,
+                                        delivery_time, pack_amount, tableware_number, tableware_status)
+            value (#{number}, #{status}, #{userId}, #{addressBookId}, #{orderTime}, #{checkoutTime},
+                   #{payMethod}, #{payStatus}, #{amount}, #{remark}, #{phone}, #{address}, #{userName},
+                   #{consignee}, #{cancelReason}, #{rejectionReason}, #{cancelTime},
+                   #{estimatedDeliveryTime}, #{deliveryStatus}, #{deliveryTime}, #{packAmount},
+                   #{tablewareNumber}, #{tablewareStatus})
+    </insert>
+
+    <insert id="insert">
+        INSERT INTO sky_take_out.order_detail(
+        name, image, order_id, dish_id, setmeal_id, dish_flavor, number, amount
+        ) VALUES
+        <foreach collection="orderDetailList" item="detail" separator=",">
+            (#{detail.name}, #{detail.image}, #{detail.orderId},#{detail.dishId},#{detail.setmealId},#{detail.dishFlavor},#{detail.number},#{detail.amount})
+        </foreach>
+    </insert>
+
+    <select id="selectList" resultType="com.sky.vo.OrderSubmitVO">
+        select id,number as orderNumber,amount as orderAmount,order_time as orderTime from sky_take_out.orders
+        <where>
+            <if test="number != null">and number = #{number}</if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.sky.entity.Orders">
+        update orders
+        <set>
+            <if test="cancelReason != null and cancelReason!='' "> cancel_reason=#{cancelReason}, </if>
+            <if test="rejectionReason != null and rejectionReason!='' "> rejection_reason=#{rejectionReason}, </if>
+            <if test="cancelTime != null"> cancel_time=#{cancelTime}, </if>
+            <if test="payStatus != null"> pay_status=#{payStatus}, </if>
+            <if test="payMethod != null"> pay_method=#{payMethod}, </if>
+            <if test="checkoutTime != null"> checkout_time=#{checkoutTime}, </if>
+            <if test="status != null"> status = #{status}, </if>
+            <if test="deliveryTime != null"> delivery_time = #{deliveryTime} </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

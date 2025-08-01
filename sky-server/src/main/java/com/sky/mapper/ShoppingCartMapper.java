@@ -20,7 +20,7 @@ public interface ShoppingCartMapper {
     void addShoppingCart(ShoppingCart shoppingCart);
 
     //展示购物车
-    List<ShoppingCart> list(Long currentEmpId);
+    List<ShoppingCart> list(@Param("currentEmpId") Long userId);
 
     //清空购物车
     @Delete("delete from sky_take_out.shopping_cart where user_id =#{userId}")
@@ -30,7 +30,7 @@ public interface ShoppingCartMapper {
     Integer selectNumber(ShoppingCart shoppingCart);
 
     //删除一个数量
-    int subNumber(ShoppingCart shoppingCart);
+    int subNumber(ShoppingCart shoppingCart);//TODO <trim>拼接查询
 
     @Delete("delete from sky_take_out.shopping_cart where number =0 and user_id =#{userId}")
     void sub(ShoppingCart shoppingCart);
