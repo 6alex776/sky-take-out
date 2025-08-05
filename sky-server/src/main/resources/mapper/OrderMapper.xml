@@ -22,7 +22,8 @@
         name, image, order_id, dish_id, setmeal_id, dish_flavor, number, amount
         ) VALUES
         <foreach collection="orderDetailList" item="detail" separator=",">
-            (#{detail.name}, #{detail.image}, #{detail.orderId},#{detail.dishId},#{detail.setmealId},#{detail.dishFlavor},#{detail.number},#{detail.amount})
+            (#{detail.name}, #{detail.image},
+            #{detail.orderId},#{detail.dishId},#{detail.setmealId},#{detail.dishFlavor},#{detail.number},#{detail.amount})
         </foreach>
     </insert>
 
@@ -36,15 +37,81 @@
     <update id="update" parameterType="com.sky.entity.Orders">
         update orders
         <set>
-            <if test="cancelReason != null and cancelReason!='' "> cancel_reason=#{cancelReason}, </if>
-            <if test="rejectionReason != null and rejectionReason!='' "> rejection_reason=#{rejectionReason}, </if>
-            <if test="cancelTime != null"> cancel_time=#{cancelTime}, </if>
-            <if test="payStatus != null"> pay_status=#{payStatus}, </if>
-            <if test="payMethod != null"> pay_method=#{payMethod}, </if>
-            <if test="checkoutTime != null"> checkout_time=#{checkoutTime}, </if>
-            <if test="status != null"> status = #{status}, </if>
-            <if test="deliveryTime != null"> delivery_time = #{deliveryTime} </if>
+            <if test="cancelReason != null and cancelReason!='' ">cancel_reason=#{cancelReason},</if>
+            <if test="rejectionReason != null and rejectionReason!='' ">rejection_reason=#{rejectionReason},</if>
+            <if test="cancelTime != null">cancel_time=#{cancelTime},</if>
+            <if test="payStatus != null">pay_status=#{payStatus},</if>
+            <if test="payMethod != null">pay_method=#{payMethod},</if>
+            <if test="checkoutTime != null">checkout_time=#{checkoutTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime}</if>
         </set>
         where id = #{id}
     </update>
+
+    <update id="updateCancel">
+        update sky_take_out.orders
+        <set>
+            cancel_reason = #{cancelReason},
+            orders.status = 6,
+            <if test="cancelTime != null">cancel_time = #{cancelTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--    订单搜索-->
+    <select id="selectPage" resultType="com.sky.vo.OrderVO">
+        select
+        *
+        # od.name,
+        # od.dish_flavor
+        from
+        sky_take_out.orders
+        # left join sky_take_out.order_detail od on o.id = od.order_id
+        <where>
+            <if test="status != null and status != ''">and status = #{status}</if>
+            <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+            <if test="number != null and number != ''">and number = #{number}</if>
+            <if test="phone != null and phone != ''">and phone = #{phone}</if>
+            <if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">and order_time
+                between #{beginTime} and #{endTime}
+            </if>
+        </where>
+        order by order_time desc
+    </select>
+
+    <select id="selectHistory" resultType="com.sky.entity.Orders">
+        select *
+        from sky_take_out.orders
+        <where>
+            <if test="status != null and status != ''">and status = #{status}</if>
+        </where>
+        order by order_time desc
+    </select>
+
+<!--    <select id="pageQuery" resultType="Orders">-->
+<!--        select * from orders-->
+<!--        <where>-->
+<!--            <if test="number != null and number!=''">-->
+<!--                and number like concat('%',#{number},'%')-->
+<!--            </if>-->
+<!--            <if test="phone != null and phone!=''">-->
+<!--                and phone like concat('%',#{phone},'%')-->
+<!--            </if>-->
+<!--            <if test="userId != null">-->
+<!--                and user_id = #{userId}-->
+<!--            </if>-->
+<!--            <if test="status != null">-->
+<!--                and status = #{status}-->
+<!--            </if>-->
+<!--            <if test="beginTime != null">-->
+<!--                and order_time &gt;= #{beginTime}-->
+<!--            </if>-->
+<!--            <if test="endTime != null">-->
+<!--                and order_time &lt;= #{endTime}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        order by order_time desc-->
+<!--    </select>-->
+
 </mapper>

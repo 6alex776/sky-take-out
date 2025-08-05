@@ -27,4 +27,7 @@ public class OrdersPageQueryDTO implements Serializable {
 
     private Long userId;
 
+    //订单菜品信息
+    private String orderDishes;
+
 }

@@ -1,10 +1,12 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -25,6 +27,7 @@ public interface OrderMapper {
 
     /**
      * 根据订单号查询订单
+     *
      * @param orderNumber
      */
     @Select("select * from sky_take_out.orders where number = #{orderNumber}")
@@ -32,6 +35,7 @@ public interface OrderMapper {
 
     /**
      * 修改订单信息
+     *
      * @param orders
      */
     void update(Orders orders);
@@ -44,6 +48,7 @@ public interface OrderMapper {
 
     /**
      * 用于替换微信支付更新数据库状态的问题
+     *
      * @param orderStatus
      * @param orderPaidStatus
      */
@@ -51,4 +56,47 @@ public interface OrderMapper {
             "where number = #{orderNumber}")
     void updateStatus(Integer orderStatus, Integer orderPaidStatus, LocalDateTime check_out_time, String orderNumber);
 
+    //订单搜索
+    Page<Orders> selectPage(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    //各个状态订单数量统计
+    @Select("select count(status) from sky_take_out.orders where status = 2")
+    Integer selectToBeConfirmed();
+
+    @Select("select count(status) from sky_take_out.orders where status = 3")
+    Integer selectConfirmed();
+
+    @Select("select count(status) from sky_take_out.orders where status = 4")
+    Integer selectDeliveryInProgress();
+
+    //接单
+    @Update("update sky_take_out.orders set status = 3 where id = #{id}")
+    void updateConfirm(Long id);
+
+    //取消订单
+    void updateCancel(Long id, String cancelReason, LocalDateTime cancelTime);
+
+    //派送订单
+    @Update("update sky_take_out.orders set status = 4 where id = #{id}")
+    void updateDelivery(Long id);
+
+    @Update("update sky_take_out.orders set status = 5,  delivery_time = #{deliveryTime} where id = #{id}")
+    void updateComplete(Long id, LocalDateTime deliveryTime);
+
+    @Update("update sky_take_out.orders set status = 6,cancel_time = #{cancelTime},rejection_reason = #{rejectionReason},cancel_reason = #{rejectionReason} where id =#{id}")
+    void updateRejection(Long id, String rejectionReason, LocalDateTime cancelTime);
+
+    //TODO SQL语句拼接
+//    @Select("select o.*,GROUP_CONCAT(CONCAT(od.name, '×', od.number) SEPARATOR ',') as orderDishes from sky_take_out.orders o left join sky_take_out.order_detail od on o.id = od.order_id where o.id = #{id}")
+//    Orders selectById(Long id);
+    @Select("select * from sky_take_out.orders where id=#{id}")
+    Orders getById(Long id);
+
+    @Select("select * from sky_take_out.order_detail where order_id = #{id}")
+    List<OrderDetail> selectByOrderId(Long id);
+
+
+    Page<Orders> selectHistory(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    //Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
 }
