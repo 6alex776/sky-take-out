@@ -51,14 +51,18 @@ sky:
     user-secret-key: itheima
     user-ttl: 720000000
     user-token-name: authentication
-
   wechat:
     appid: wx242f294cec186342
     secret: 8a95fa149ce601ceea030a3f57303640
 
+  shop:
+    address: 广东省东莞市松山湖园区大学路1号
+  baidu:
+    ak: UYsqLF34gEhM9yDpsDvyou2QlhVEeOBg
 
 aliyun:
   oss:
     endpoint: https://oss-cn-beijing.aliyuncs.com
     bucketName: sky-linus
     region: cn-beijing
+

@@ -44,6 +44,7 @@ public class AddressBookServiceImpl implements AddressBookService {
      * @return
      */
     public AddressBook getById(Long id) {
+        Long userId = BaseContext.getCurrentId();
         AddressBook addressBook = addressBookMapper.getById(id);
         return addressBook;
     }

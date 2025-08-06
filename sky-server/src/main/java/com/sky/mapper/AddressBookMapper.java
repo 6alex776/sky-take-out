@@ -30,7 +30,7 @@ public interface AddressBookMapper {
      * @param id
      * @return
      */
-    @Select("select * from sky_take_out.address_book where id = #{id} or user_id =#{id}")
+    @Select("select * from sky_take_out.address_book where id = #{id}")
     AddressBook getById(Long id);
 
     /**
@@ -52,5 +52,6 @@ public interface AddressBookMapper {
      */
     @Delete("delete from sky_take_out.address_book where id = #{id}")
     void deleteById(Long id);
+
 
 }

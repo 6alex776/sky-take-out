@@ -5,7 +5,6 @@ import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
 import com.sky.vo.OrderSubmitVO;
-import com.sky.vo.OrderVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -97,6 +96,16 @@ public interface OrderMapper {
 
 
     Page<Orders> selectHistory(OrdersPageQueryDTO ordersPageQueryDTO);
+
+//    @Update("update sky_take_out.orders set status = 6,cancel_reason = #{cancelReason},cancel_time = #{cancelTime} where status =#{status}")
+//    void cancelAll(LocalDateTime cancelTime, Integer status, String cancelReason);
+
+    //超时订单
+    @Update("update sky_take_out.orders set status = 6,cancel_reason = #{cancelReason},cancel_time = #{cancelTime} where status =#{status} and TIMESTAMPDIFF(MINUTE, order_time, #{cancelTime}) > 15")//后减前
+    void cancelOutTime(LocalDateTime cancelTime, Integer status, String cancelReason);
+
+    @Select("select id from sky_take_out.orders where number = #{orderNumber}")
+    Long selectOrderId(String orderNumber);
 
     //Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
 }
