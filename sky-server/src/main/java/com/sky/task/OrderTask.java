@@ -20,7 +20,7 @@ public class OrderTask {
     private OrderMapper orderMapper;
 
     //超时订单
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0/3 * * * *")
     public void outOfTime(){
         log.info("处理支付超时订单");
         Orders orders = new Orders();

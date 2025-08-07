@@ -319,7 +319,7 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = orderMapper.getById(id);
 
         // 查询该订单对应的菜品/套餐明细
-        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(orders.getId());
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId1(orders.getId());
 
         // 将该订单及其详情封装到OrderVO并返回
         OrderVO orderVO = new OrderVO();
@@ -364,7 +364,7 @@ public class OrderServiceImpl implements OrderService {
                 Long orderId = orders.getId();// 订单id
 
                 // 查询订单明细
-                List<OrderDetail> orderDetails = orderDetailMapper.getByOrderId(orderId);
+                List<OrderDetail> orderDetails = orderDetailMapper.getByOrderId1(orderId);
 
                 OrderVO orderVO = new OrderVO();
                 BeanUtils.copyProperties(orders, orderVO);
@@ -447,5 +447,21 @@ public class OrderServiceImpl implements OrderService {
             //配送距离超过5000米
             throw new OrderBusinessException("超出配送范围");
         }
+    }
+
+    //用户催单
+    @Override
+    public void reminder(Long id) {
+        log.info("支付成功订单提醒");
+        Orders orders = orderMapper.getById(id);
+        String orderNumber = orders.getNumber();
+
+        Map map = new HashMap();
+        map.put("type",2);
+        map.put("orderId",id);
+        map.put("content","订单号:"+orderNumber);
+
+        String jsonString = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(jsonString);
     }
 }

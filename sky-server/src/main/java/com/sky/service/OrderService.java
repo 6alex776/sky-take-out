@@ -54,4 +54,6 @@ public interface OrderService {
     PageResult pageQuery4User(int page, int pageSize, Integer status);
 
     void userCancel(Long id);
+
+    void reminder(Long id);
 }

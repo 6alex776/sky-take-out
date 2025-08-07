@@ -88,8 +88,15 @@
         </where>
         order by order_time desc
     </select>
+    <select id="selectByStatus" resultType="java.lang.Integer">
+        select count(status)
+        from sky_take_out.orders
+        <where>
+            <if test="status != null">status = #{status}</if>
+        </where>
+    </select>
 
-<!--    <select id="pageQuery" resultType="Orders">-->
+    <!--    <select id="pageQuery" resultType="Orders">-->
 <!--        select * from orders-->
 <!--        <where>-->
 <!--            <if test="number != null and number!=''">-->

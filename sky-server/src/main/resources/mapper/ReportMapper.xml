@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.sky.mapper.ReportMapper">
+
+    <select id="selectUser" resultType="java.lang.Integer">
+        select count(id)
+        from sky_take_out.user
+        <where>
+            <if test="begin != null">
+                and create_time &gt;= #{begin}
+            </if>
+            <if test="end != null">
+                and create_time &lt;= #{end}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectOrderCount" resultType="java.lang.Integer">
+        select count(id)
+        from sky_take_out.orders
+        <where>
+            <if test="begin != null and end != null">order_time between #{begin} and #{end}</if>
+        </where>
+    </select>
+
+    <select id="selectValidOrderCount" resultType="java.lang.Integer">
+        select count(id)
+        from sky_take_out.orders
+        <where>
+            status = 5
+            <if test="begin != null and end != null">and order_time between #{begin} and #{end}</if>
+        </where>
+    </select>
+
+
+    <select id="selectNames" resultType="java.lang.String">
+        select od.name ,count(dish_id) AS order_count -- 新增销量统计
+        from sky_take_out.order_detail od
+                 left join sky_take_out.orders o on o.id = od.order_id
+        where o.status = 5
+          and delivery_time between #{begin} and #{end}
+        group by od.dish_id, od.name
+        order by order_count desc;
+    </select>
+
+    <select id="selectNumbers" resultType="java.lang.Integer">
+        select count(dish_id) AS order_count  -- 新增销量统计
+        from sky_take_out.order_detail od
+                 left join sky_take_out.orders o on o.id = od.order_id
+        where o.status = 5
+          and delivery_time between #{begin} and #{end}
+        group by od.dish_id
+        order by order_count desc;  -- 按销量排序
+    </select>
+
+</mapper>

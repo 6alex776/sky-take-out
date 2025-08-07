@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -68,6 +69,8 @@ public interface OrderMapper {
     @Select("select count(status) from sky_take_out.orders where status = 4")
     Integer selectDeliveryInProgress();
 
+    Integer selectByStatus(Integer status);
+
     //接单
     @Update("update sky_take_out.orders set status = 3 where id = #{id}")
     void updateConfirm(Long id);
@@ -106,6 +109,12 @@ public interface OrderMapper {
 
     @Select("select id from sky_take_out.orders where number = #{orderNumber}")
     Long selectOrderId(String orderNumber);
+
+    @Select("select count(id) from sky_take_out.orders where status =5 and delivery_time > DATE_SUB(NOW(), INTERVAL 1 DAY) ")
+    Integer countByMap(Map map);
+
+    @Select("select sum(amount) from sky_take_out.orders where status =5 and delivery_time > DATE_SUB(NOW(), INTERVAL 1 DAY)")
+    Double sumByMap(Map map);
 
     //Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
 }
