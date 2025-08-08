@@ -52,13 +52,13 @@ sky:
     user-ttl: 720000000
     user-token-name: authentication
   wechat:
-    appid: wx242f294cec186342
-    secret: 8a95fa149ce601ceea030a3f57303640
+    appid: ${sky.jwt.wechat.appid}
+    secret: ${sky.jwt.wechat.secret}
 
   shop:
-    address: 广东省东莞市松山湖园区大学路1号
+    address: ${sky.jwt.shop.address}
   baidu:
-    ak: UYsqLF34gEhM9yDpsDvyou2QlhVEeOBg
+    ak: ${sky.jwt.baidu.ak}
 
 aliyun:
   oss:
