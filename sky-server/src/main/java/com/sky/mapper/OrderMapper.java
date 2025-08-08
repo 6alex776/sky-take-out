@@ -60,33 +60,8 @@ public interface OrderMapper {
     Page<Orders> selectPage(OrdersPageQueryDTO ordersPageQueryDTO);
 
     //各个状态订单数量统计
-    @Select("select count(status) from sky_take_out.orders where status = 2")
-    Integer selectToBeConfirmed();
-
-    @Select("select count(status) from sky_take_out.orders where status = 3")
-    Integer selectConfirmed();
-
-    @Select("select count(status) from sky_take_out.orders where status = 4")
-    Integer selectDeliveryInProgress();
-
     Integer selectByStatus(Integer status);
 
-    //接单
-    @Update("update sky_take_out.orders set status = 3 where id = #{id}")
-    void updateConfirm(Long id);
-
-    //取消订单
-    void updateCancel(Long id, String cancelReason, LocalDateTime cancelTime);
-
-    //派送订单
-    @Update("update sky_take_out.orders set status = 4 where id = #{id}")
-    void updateDelivery(Long id);
-
-    @Update("update sky_take_out.orders set status = 5,  delivery_time = #{deliveryTime} where id = #{id}")
-    void updateComplete(Long id, LocalDateTime deliveryTime);
-
-    @Update("update sky_take_out.orders set status = 6,cancel_time = #{cancelTime},rejection_reason = #{rejectionReason},cancel_reason = #{rejectionReason} where id =#{id}")
-    void updateRejection(Long id, String rejectionReason, LocalDateTime cancelTime);
 
     //TODO SQL语句拼接
 //    @Select("select o.*,GROUP_CONCAT(CONCAT(od.name, '×', od.number) SEPARATOR ',') as orderDishes from sky_take_out.orders o left join sky_take_out.order_detail od on o.id = od.order_id where o.id = #{id}")
@@ -98,23 +73,18 @@ public interface OrderMapper {
     List<OrderDetail> selectByOrderId(Long id);
 
 
-    Page<Orders> selectHistory(OrdersPageQueryDTO ordersPageQueryDTO);
-
-//    @Update("update sky_take_out.orders set status = 6,cancel_reason = #{cancelReason},cancel_time = #{cancelTime} where status =#{status}")
-//    void cancelAll(LocalDateTime cancelTime, Integer status, String cancelReason);
-
     //超时订单
     @Update("update sky_take_out.orders set status = 6,cancel_reason = #{cancelReason},cancel_time = #{cancelTime} where status =#{status} and TIMESTAMPDIFF(MINUTE, order_time, #{cancelTime}) > 15")//后减前
-    void cancelOutTime(LocalDateTime cancelTime, Integer status, String cancelReason);
+    void cancelOutTime(Orders  orders);
 
     @Select("select id from sky_take_out.orders where number = #{orderNumber}")
     Long selectOrderId(String orderNumber);
 
-    @Select("select count(id) from sky_take_out.orders where status =5 and delivery_time > DATE_SUB(NOW(), INTERVAL 1 DAY) ")
+    //查询总订单数
+    //有效订单数
     Integer countByMap(Map map);
 
-    @Select("select sum(amount) from sky_take_out.orders where status =5 and delivery_time > DATE_SUB(NOW(), INTERVAL 1 DAY)")
+    @Select("select sum(amount) from sky_take_out.orders where status =5 and delivery_time >= #{begin} and delivery_time <= #{end}")
     Double sumByMap(Map map);
 
-    //Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
 }

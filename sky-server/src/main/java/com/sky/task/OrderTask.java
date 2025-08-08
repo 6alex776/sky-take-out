@@ -20,14 +20,14 @@ public class OrderTask {
     private OrderMapper orderMapper;
 
     //超时订单
-    @Scheduled(cron = "0 0/3 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void outOfTime(){
         log.info("处理支付超时订单");
         Orders orders = new Orders();
         orders.setCancelTime(LocalDateTime.now());
         orders.setStatus(1);
         orders.setCancelReason("支付超时");
-        orderMapper.cancelOutTime(orders.getCancelTime(),orders.getStatus(),orders.getCancelReason());
+        orderMapper.cancelOutTime(orders);
     }
 
     //处理派送中订单
@@ -38,7 +38,7 @@ public class OrderTask {
         orders.setCancelTime(LocalDateTime.now());
         orders.setStatus(4);
         orders.setCancelReason("派送超时");
-        orderMapper.cancelOutTime(orders.getCancelTime(),orders.getStatus(),orders.getCancelReason());
+        orderMapper.cancelOutTime(orders);
     }
 
 }

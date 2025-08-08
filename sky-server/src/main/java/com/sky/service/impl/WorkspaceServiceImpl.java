@@ -51,7 +51,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         map.put("end",end);
 
         //查询总订单数
-        Integer totalOrderCount = orderMapper.countByMap(map);
+        Integer totalOrderCount = reportMapper.selectOrderCount(map);
 
         map.put("status", Orders.COMPLETED);
         //营业额
@@ -59,7 +59,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         turnover = turnover == null? 0.0 : turnover;
 
         //有效订单数
-        Integer validOrderCount = orderMapper.countByMap(map);
+        Integer validOrderCount = reportMapper.selectValidOrderCount(map);
 
         Double unitPrice = 0.0;
 

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDate;
 
 @RestController
@@ -53,5 +55,12 @@ public class ReportController {
         log.info("销量排名");
         SalesTop10ReportVO top = reportService.top(begin,end);
         return Result.success(top);
+    }
+
+    //导出数据
+    @GetMapping("/export")
+    public void export(HttpServletResponse response) throws IOException {
+        log.info("导出数据");
+        reportService.export(response);
     }
 }

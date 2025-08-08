@@ -270,9 +270,9 @@ public class OrderServiceImpl implements OrderService {
     public OrderStatisticsVO statistics() {
         OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
 
-        orderStatisticsVO.setToBeConfirmed(orderMapper.selectToBeConfirmed());
-        orderStatisticsVO.setConfirmed(orderMapper.selectConfirmed());
-        orderStatisticsVO.setDeliveryInProgress(orderMapper.selectDeliveryInProgress());
+        orderStatisticsVO.setToBeConfirmed(orderMapper.selectByStatus(2));
+        orderStatisticsVO.setConfirmed(orderMapper.selectByStatus(3));
+        orderStatisticsVO.setDeliveryInProgress(orderMapper.selectByStatus(4));
 
         return orderStatisticsVO;
     }
@@ -280,35 +280,44 @@ public class OrderServiceImpl implements OrderService {
     //接单
     @Override
     public void confirm(Orders orders) {
-        orderMapper.updateConfirm(orders.getId());
+        orders.setStatus(Orders.CONFIRMED);
+        orderMapper.update(orders);
     }
 
     //取消订单
     @Override
     public void cancel(Orders orders) {
         orders.setCancelTime(LocalDateTime.now());
-        orderMapper.updateCancel(orders.getId(), orders.getCancelReason(), orders.getCancelTime());
+        orders.setStatus(Orders.CANCELLED);
+        orderMapper.update(orders);
     }
 
     //派送订单
     @Override
     public void delivery(Long id) {
-        orderMapper.updateDelivery(id);
+        Orders orders = new Orders();
+        orders.setId(id);
+        orders.setStatus(Orders.DELIVERY_IN_PROGRESS);
+        orderMapper.update(orders);
     }
 
     //完成订单
     @Override
     public void complete(Long id) {
         Orders orders = new Orders();
+        orders.setId(id);
         orders.setDeliveryTime(LocalDateTime.now());
-        orderMapper.updateComplete(id, orders.getDeliveryTime());
+        orders.setStatus(Orders.COMPLETED);
+        orderMapper.update(orders);
     }
 
     //拒单
     @Override
     public void rejection(Orders orders) {
         orders.setCancelTime(LocalDateTime.now());
-        orderMapper.updateRejection(orders.getId(), orders.getRejectionReason(), orders.getCancelTime());
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelReason(orders.getRejectionReason());
+        orderMapper.update(orders);
     }
 
     //TODO list封装
@@ -382,7 +391,8 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = new Orders();
         orders.setCancelTime(LocalDateTime.now());
         orders.setId(id);
-        orderMapper.updateCancel(orders.getId(), orders.getCancelReason(), orders.getCancelTime());
+        orders.setStatus(Orders.CANCELLED);
+        orderMapper.update(orders);
     }
 
     /**
