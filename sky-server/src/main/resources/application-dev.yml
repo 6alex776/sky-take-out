@@ -8,11 +8,11 @@ sky:
     password: 1234
   jwt:
     wechat:
-      appid: wx242f294cec186342
-      secret: 8a95fa149ce601ceea030a3f57303640
+      appid:
+      secret:
     shop:
-      address: 广东省东莞市松山湖园区大学路1号
+      address:
     baidu:
-      ak: UYsqLF34gEhM9yDpsDvyou2QlhVEeOBg
+      ak:
 
 
