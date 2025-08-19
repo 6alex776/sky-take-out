@@ -11,4 +11,22 @@ public class OrdersCancelDTO implements Serializable {
     //订单取消原因
     private String cancelReason;
 
+    /**
+     * getter和setter方法
+     */
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
 }

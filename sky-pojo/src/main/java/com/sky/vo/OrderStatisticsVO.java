@@ -13,4 +13,31 @@ public class OrderStatisticsVO implements Serializable {
 
     //派送中数量
     private Integer deliveryInProgress;
+
+    /**
+     * getter和setter方法
+     */
+    public Integer getToBeConfirmed() {
+        return toBeConfirmed;
+    }
+
+    public void setToBeConfirmed(Integer toBeConfirmed) {
+        this.toBeConfirmed = toBeConfirmed;
+    }
+
+    public Integer getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(Integer confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public Integer getDeliveryInProgress() {
+        return deliveryInProgress;
+    }
+
+    public void setDeliveryInProgress(Integer deliveryInProgress) {
+        this.deliveryInProgress = deliveryInProgress;
+    }
 }

@@ -28,4 +28,79 @@ public class OrdersSubmitDTO implements Serializable {
     private Integer packAmount;
     //总金额
     private BigDecimal amount;
+
+    /**
+     * getter和setter方法
+     */
+    public Long getAddressBookId() {
+        return addressBookId;
+    }
+
+    public void setAddressBookId(Long addressBookId) {
+        this.addressBookId = addressBookId;
+    }
+
+    public int getPayMethod() {
+        return payMethod;
+    }
+
+    public void setPayMethod(int payMethod) {
+        this.payMethod = payMethod;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public LocalDateTime getEstimatedDeliveryTime() {
+        return estimatedDeliveryTime;
+    }
+
+    public void setEstimatedDeliveryTime(LocalDateTime estimatedDeliveryTime) {
+        this.estimatedDeliveryTime = estimatedDeliveryTime;
+    }
+
+    public Integer getDeliveryStatus() {
+        return deliveryStatus;
+    }
+
+    public void setDeliveryStatus(Integer deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
+
+    public Integer getTablewareNumber() {
+        return tablewareNumber;
+    }
+
+    public void setTablewareNumber(Integer tablewareNumber) {
+        this.tablewareNumber = tablewareNumber;
+    }
+
+    public Integer getTablewareStatus() {
+        return tablewareStatus;
+    }
+
+    public void setTablewareStatus(Integer tablewareStatus) {
+        this.tablewareStatus = tablewareStatus;
+    }
+
+    public Integer getPackAmount() {
+        return packAmount;
+    }
+
+    public void setPackAmount(Integer packAmount) {
+        this.packAmount = packAmount;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 }

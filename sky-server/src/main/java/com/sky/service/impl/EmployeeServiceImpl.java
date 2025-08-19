@@ -30,7 +30,7 @@ import java.util.List;
 
 import com.sky.utils.JwtUtil;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 @Slf4j

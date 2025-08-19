@@ -31,4 +31,66 @@ public class OrderReportVO implements Serializable {
     //订单完成率
     private Double orderCompletionRate;
 
+    /**
+     * getter和setter方法
+     */
+    public String getDateList() {
+        return dateList;
+    }
+
+    public void setDateList(String dateList) {
+        this.dateList = dateList;
+    }
+
+    public String getOrderCountList() {
+        return orderCountList;
+    }
+
+    public void setOrderCountList(String orderCountList) {
+        this.orderCountList = orderCountList;
+    }
+
+    public String getValidOrderCountList() {
+        return validOrderCountList;
+    }
+
+    public void setValidOrderCountList(String validOrderCountList) {
+        this.validOrderCountList = validOrderCountList;
+    }
+
+    public Integer getTotalOrderCount() {
+        return totalOrderCount;
+    }
+
+    public void setTotalOrderCount(Integer totalOrderCount) {
+        this.totalOrderCount = totalOrderCount;
+    }
+
+    public Integer getValidOrderCount() {
+        return validOrderCount;
+    }
+
+    public void setValidOrderCount(Integer validOrderCount) {
+        this.validOrderCount = validOrderCount;
+    }
+
+    public Double getOrderCompletionRate() {
+        return orderCompletionRate;
+    }
+
+    public void setOrderCompletionRate(Double orderCompletionRate) {
+        this.orderCompletionRate = orderCompletionRate;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderReportVO{" +
+                "dateList='" + dateList + '\'' +
+                ", orderCountList='" + orderCountList + '\'' +
+                ", validOrderCountList='" + validOrderCountList + '\'' +
+                ", totalOrderCount=" + totalOrderCount +
+                ", validOrderCount=" + validOrderCount +
+                ", orderCompletionRate=" + orderCompletionRate +
+                '}';
+    }
 }

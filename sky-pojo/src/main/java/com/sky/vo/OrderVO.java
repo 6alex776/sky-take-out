@@ -19,4 +19,22 @@ public class OrderVO extends Orders implements Serializable {
     //订单详情
     private List<OrderDetail> orderDetailList;
 
+    /**
+     * getter和setter方法
+     */
+    public String getOrderDishes() {
+        return orderDishes;
+    }
+
+    public void setOrderDishes(String orderDishes) {
+        this.orderDishes = orderDishes;
+    }
+
+    public List<OrderDetail> getOrderDetailList() {
+        return orderDetailList;
+    }
+
+    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+        this.orderDetailList = orderDetailList;
+    }
 }

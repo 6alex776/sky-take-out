@@ -17,4 +17,23 @@ public class GoodsSalesDTO implements Serializable {
 
     //销量
     private Integer number;
+
+    /**
+     * getter和setter方法
+     */
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
 }

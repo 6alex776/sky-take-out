@@ -18,4 +18,22 @@ public class DataOverViewQueryDTO implements Serializable {
 
     private LocalDateTime end;
 
+    /**
+     * getter和setter方法
+     */
+    public LocalDateTime getBegin() {
+        return begin;
+    }
+
+    public void setBegin(LocalDateTime begin) {
+        this.begin = begin;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
+    }
 }

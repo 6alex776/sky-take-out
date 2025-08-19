@@ -107,4 +107,229 @@ public class Orders implements Serializable {
 
     //餐具数量状态  1按餐量提供  0选择具体数量
     private Integer tablewareStatus;//
+
+    /**
+     * getter和setter方法
+     */
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getAddressBookId() {
+        return addressBookId;
+    }
+
+    public void setAddressBookId(Long addressBookId) {
+        this.addressBookId = addressBookId;
+    }
+
+    public LocalDateTime getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(LocalDateTime orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public LocalDateTime getCheckoutTime() {
+        return checkoutTime;
+    }
+
+    public void setCheckoutTime(LocalDateTime checkoutTime) {
+        this.checkoutTime = checkoutTime;
+    }
+
+    public Integer getPayMethod() {
+        return payMethod;
+    }
+
+    public void setPayMethod(Integer payMethod) {
+        this.payMethod = payMethod;
+    }
+
+    public Integer getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(Integer payStatus) {
+        this.payStatus = payStatus;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getConsignee() {
+        return consignee;
+    }
+
+    public void setConsignee(String consignee) {
+        this.consignee = consignee;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
+    }
+
+    public LocalDateTime getCancelTime() {
+        return cancelTime;
+    }
+
+    public void setCancelTime(LocalDateTime cancelTime) {
+        this.cancelTime = cancelTime;
+    }
+
+    public LocalDateTime getEstimatedDeliveryTime() {
+        return estimatedDeliveryTime;
+    }
+
+    public void setEstimatedDeliveryTime(LocalDateTime estimatedDeliveryTime) {
+        this.estimatedDeliveryTime = estimatedDeliveryTime;
+    }
+
+    public Integer getDeliveryStatus() {
+        return deliveryStatus;
+    }
+
+    public void setDeliveryStatus(Integer deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
+
+    public LocalDateTime getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(LocalDateTime deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
+    public int getPackAmount() {
+        return packAmount;
+    }
+
+    public void setPackAmount(int packAmount) {
+        this.packAmount = packAmount;
+    }
+
+    public int getTablewareNumber() {
+        return tablewareNumber;
+    }
+
+    public void setTablewareNumber(int tablewareNumber) {
+        this.tablewareNumber = tablewareNumber;
+    }
+
+    public Integer getTablewareStatus() {
+        return tablewareStatus;
+    }
+
+    public void setTablewareStatus(Integer tablewareStatus) {
+        this.tablewareStatus = tablewareStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                ", status=" + status +
+                ", userId=" + userId +
+                ", addressBookId=" + addressBookId +
+                ", orderTime=" + orderTime +
+                ", checkoutTime=" + checkoutTime +
+                ", payMethod=" + payMethod +
+                ", payStatus=" + payStatus +
+                ", amount=" + amount +
+                ", remark='" + remark + '\'' +
+                ", userName='" + userName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", consignee='" + consignee + '\'' +
+                ", cancelReason='" + cancelReason + '\'' +
+                ", rejectionReason='" + rejectionReason + '\'' +
+                ", cancelTime=" + cancelTime +
+                ", estimatedDeliveryTime=" + estimatedDeliveryTime +
+                ", deliveryStatus=" + deliveryStatus +
+                ", deliveryTime=" + deliveryTime +
+                ", packAmount=" + packAmount +
+                ", tablewareNumber=" + tablewareNumber +
+                ", tablewareStatus=" + tablewareStatus +
+                '}';
+    }
 }

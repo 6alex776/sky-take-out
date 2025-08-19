@@ -2,6 +2,8 @@ package com.sky.mapper;
 
 import com.sky.entity.AddressBook;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Mapper

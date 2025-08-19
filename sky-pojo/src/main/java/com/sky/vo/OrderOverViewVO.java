@@ -29,4 +29,58 @@ public class OrderOverViewVO implements Serializable {
 
     //全部订单
     private Integer allOrders;
+
+    /**
+     * getter和setter方法
+     */
+    public Integer getWaitingOrders() {
+        return waitingOrders;
+    }
+
+    public void setWaitingOrders(Integer waitingOrders) {
+        this.waitingOrders = waitingOrders;
+    }
+
+    public Integer getDeliveredOrders() {
+        return deliveredOrders;
+    }
+
+    public void setDeliveredOrders(Integer deliveredOrders) {
+        this.deliveredOrders = deliveredOrders;
+    }
+
+    public Integer getCompletedOrders() {
+        return completedOrders;
+    }
+
+    public void setCompletedOrders(Integer completedOrders) {
+        this.completedOrders = completedOrders;
+    }
+
+    public Integer getCancelledOrders() {
+        return cancelledOrders;
+    }
+
+    public void setCancelledOrders(Integer cancelledOrders) {
+        this.cancelledOrders = cancelledOrders;
+    }
+
+    public Integer getAllOrders() {
+        return allOrders;
+    }
+
+    public void setAllOrders(Integer allOrders) {
+        this.allOrders = allOrders;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderOverViewVO{" +
+                "waitingOrders=" + waitingOrders +
+                ", deliveredOrders=" + deliveredOrders +
+                ", completedOrders=" + completedOrders +
+                ", cancelledOrders=" + cancelledOrders +
+                ", allOrders=" + allOrders +
+                '}';
+    }
 }

@@ -20,4 +20,31 @@ public class DishOverViewVO implements Serializable {
 
     // 已停售数量
     private Integer discontinued;
+
+    /**
+     * getter和setter方法
+     */
+    public Integer getSold() {
+        return sold;
+    }
+
+    public void setSold(Integer sold) {
+        this.sold = sold;
+    }
+
+    public Integer getDiscontinued() {
+        return discontinued;
+    }
+
+    public void setDiscontinued(Integer discontinued) {
+        this.discontinued = discontinued;
+    }
+
+    @Override
+    public String toString() {
+        return "DishOverViewVO{" +
+                "sold=" + sold +
+                ", discontinued=" + discontinued +
+                '}';
+    }
 }

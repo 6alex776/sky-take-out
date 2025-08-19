@@ -16,4 +16,30 @@ public class EmployeePageQueryDTO implements Serializable {
     //每页显示记录数
     private int pageSize;
 
+    /**
+     * getter和setter方法
+     */
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
 }
