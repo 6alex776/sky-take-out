@@ -1,0 +1,45 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: smartdine-ai-agent
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: DEFAULT_GROUP
+      config:
+        server-addr: ${NACOS_SERVER:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:}
+        group: DEFAULT_GROUP
+        file-extension: yml
+        import-check:
+          enabled: false
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/smartdine}
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+
+# SmartDine AI配置
+smartdine:
+  ai:
+    api-key: ${AI_API_KEY:}
+    base-url: ${AI_BASE_URL:https://api.openai.com/v1}
+    model: ${AI_MODEL:gpt-4o-mini}
+    timeout: 60
+  jwt:
+    admin-secret-key: ${JWT_ADMIN_SECRET:smartdineadmin}
+    admin-ttl: 7200000
+    admin-token-name: token
+
+# 日志配置
+logging:
+  level:
+    com.smartdine.ai.agent: DEBUG
+    dev.langchain4j: DEBUG

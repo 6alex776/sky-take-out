@@ -1,6 +1,69 @@
-**/target/
-.idea
-*.iml
+# Compiled class files
 *.class
+
+# Maven target directories
+**/target/
+!**/src/**/target/
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+*~
+
+# Test files
 *Test.java
 **/test/
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment and sensitive config
+application-dev.yml
+application-prod.yml
+application-local.yml
+*.properties
+!application.yml
+!application.properties
+
+# Nacos config (may contain secrets)
+nacos/
+
+# MongoDB data
+*.mongodb
+
+# Redis dump
+dump.rdb
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Node modules (if frontend added later)
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Coverage reports
+coverage/
+*.exec
+
+# Database files
+*.db
+*.sql
+*.sqlite
+
+# Docker volumes
+data/

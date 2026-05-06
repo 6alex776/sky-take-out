@@ -1,0 +1,60 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: smartdine-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: public
+        group: DEFAULT_GROUP
+      config:
+        server-addr: localhost:8848
+        namespace: public
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        shared-configs:
+          - data-id: smartdine-common.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # AI Agent 服务路由
+        - id: smartdine-ai-agent
+          uri: lb://smartdine-ai-agent
+          predicates:
+            - Path=/api/v1/ai/**
+          filters:
+            - StripPrefix=2
+
+        # 核心业务服务路由
+        - id: smartdine-service
+          uri: lb://smartdine-service
+          predicates:
+            - Path=/api/v1/**
+          filters:
+            - StripPrefix=2
+
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: false
+            maxAge: 3600
+
+  config:
+    import:
+      - optional:nacos:smartdine-gateway.yaml
+
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+    com.smartdine.gateway: info

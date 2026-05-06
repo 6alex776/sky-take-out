@@ -1,0 +1,40 @@
+package com.smartdine.vo;
+
+import com.smartdine.entity.OrderDetail;
+import com.smartdine.entity.Orders;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.io.Serializable;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderVO extends Orders implements Serializable {
+
+    //订单菜品信息
+    private String orderDishes;
+
+    //订单详情
+    private List<OrderDetail> orderDetailList;
+
+    /**
+     * getter和setter方法
+     */
+    public String getOrderDishes() {
+        return orderDishes;
+    }
+
+    public void setOrderDishes(String orderDishes) {
+        this.orderDishes = orderDishes;
+    }
+
+    public List<OrderDetail> getOrderDetailList() {
+        return orderDetailList;
+    }
+
+    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+        this.orderDetailList = orderDetailList;
+    }
+}
